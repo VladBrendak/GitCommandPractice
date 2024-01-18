@@ -1,0 +1,17 @@
+Site where i`m practice: https://datawithdev.com/sql-playground/#/workspace
+
+--SELECT * FROM dim_dog_breed;
+
+--SELECT BREED_NAME, (DOG_SIZE || ', ' || HEIGHT_MALE_MEDIAN) AS [DOG_SIZE and HEIGHT_MALE_MEDIAN]
+--FROM dim_dog_breed
+--WHERE DOG_SIZE IN ('small', 'large');
+
+--SELECT ddl.STREET_NAME, ddl.STREET_NUMBER, ('year of expense: ' || fdae.year_of_expense || ', amount: ' || fdae.amount) AS "year_of_expense and amount"
+--FROM dim_dog_location AS ddl, fact_dog_annual_expenses AS fdae
+--WHERE STREET_NAME NOT LIKE 'U%'
+--LIMIT 10;
+
+--SELECT (ddb.BREED_NAME || ', ' || ddb.ENERGY_LEVEL) AS "BREED_NAME and ENERGY_LEVEL", d.GENDER_CODE AS SEX
+--FROM dim_dog_breed AS ddb, dogs AS d
+--WHERE ddb.BREED_NAME NOT LIKE 'u%'
+--LIMIT 20;
