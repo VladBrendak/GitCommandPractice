@@ -15,3 +15,9 @@ Site where i`m practice: https://datawithdev.com/sql-playground/#/workspace
 --FROM dim_dog_breed AS ddb, dogs AS d
 --WHERE ddb.BREED_NAME NOT LIKE 'u%'
 --LIMIT 20;
+
+SELECT BREED_NAME AS Breed, ('Life expentancy: ' || LIFE_EXPECTANCY || '; Current energy level: ' || ENERGY_LEVEL) AS "Health state" 
+FROM dim_dog_breed
+WHERE BREED_NAME IN 
+	(SELECT DISTINCT BREED_NAME 
+	 FROM dim_dog_breed)
