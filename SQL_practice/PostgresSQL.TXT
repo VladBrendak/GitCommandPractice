@@ -1,0 +1,60 @@
+SELECT t.title AS "Title", CONCAT(t.description, ', ', t.creation_date) AS "Description and Creation Date"
+FROM task AS t;
+
+SELECT * FROM task;
+
+SELECT t.title, t.description, t.results, s.status, p.priority, t.creation_date
+FROM task AS t 
+JOIN priority AS p
+ON t.priority = p.priority_id
+JOIN status AS s
+ON t.status = s.status_id;
+
+SELECT tasktag.task_id, STRING_AGG(tag.name, ', ') AS "task tags"
+FROM tag
+JOIN tasktag ON tag.tag_id = tasktag.tag_id
+GROUP BY tasktag.task_id;
+
+SELECT task.title, tasktag.task_id, STRING_AGG(tag.name, ', ') AS "task tags"
+FROM tag
+JOIN tasktag ON tag.tag_id = tasktag.tag_id
+JOIN task ON task.task_id = tasktag.task_id
+GROUP BY task.title, tasktag.task_id;
+
+SELECT 
+	task.title,
+	task.description,
+	task.results,
+	priority.priority,
+	status.status,
+	task.creation_date,
+	STRING_AGG(tag.name, ', ') AS "task tags"
+FROM tag
+JOIN tasktag ON tag.tag_id = tasktag.tag_id
+JOIN task ON task.task_id = tasktag.task_id
+JOIN priority ON task.priority = priority.priority_id
+JOIN status ON task.status = status.status_id
+GROUP BY 
+	task.title,
+	task.description,
+	task.results,
+	priority.priority,
+	status.status,
+	task.creation_date;
+	
+SELECT 
+    task.title,
+    task.description,
+    task.results,
+    priority.priority,
+    status.status,
+    task.creation_date,
+    (
+        SELECT STRING_AGG(CONCAT('#', tag.name), ' ') 
+        FROM tag
+        JOIN tasktag ON tag.tag_id = tasktag.tag_id
+        WHERE tasktag.task_id = task.task_id
+    ) AS "task tags"
+FROM task
+JOIN priority ON task.priority = priority.priority_id
+JOIN status ON task.status = status.status_id;
