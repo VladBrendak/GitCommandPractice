@@ -15,7 +15,7 @@ FROM tag
 JOIN tasktag ON tag.tag_id = tasktag.tag_id
 GROUP BY tasktag.task_id;
 
-SELECT task.title, tasktag.task_id, STRING_AGG(tag.name, ', ') AS "task tags"
+SELECT tasktag.task_id, task.title, STRING_AGG(tag.name, ', ') AS "task tags"
 FROM tag
 JOIN tasktag ON tag.tag_id = tasktag.tag_id
 JOIN task ON task.task_id = tasktag.task_id
@@ -49,6 +49,20 @@ SELECT
     priority.priority,
     status.status,
     task.creation_date,
+    (
+        SELECT STRING_AGG(CONCAT('#', tag.name), ' ') 
+        FROM tag
+        JOIN tasktag ON tag.tag_id = tasktag.tag_id
+        WHERE tasktag.task_id = task.task_id
+    ) AS "task tags"
+FROM task
+JOIN priority ON task.priority = priority.priority_id
+JOIN status ON task.status = status.status_id;
+
+SELECT 
+	task.*,
+    priority.priority AS "priority_value",
+    status.status AS "status_value",
     (
         SELECT STRING_AGG(CONCAT('#', tag.name), ' ') 
         FROM tag
