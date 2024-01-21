@@ -73,7 +73,7 @@ FROM task
 JOIN priority ON task.priority = priority.priority_id
 JOIN status ON task.status = status.status_id;
 
-SELECT tag.name,
+SELECT tag.tag_id, tag.name,
 	CASE 
 		WHEN tag.tag_id IN 
 		(
@@ -85,4 +85,18 @@ SELECT tag.name,
 		THEN true
 		ELSE false
 	END AS "relative"
-FROM tag
+FROM tag;
+
+SELECT employee.employee_id, employee.name,
+	CASE 
+		WHEN employee.employee_id IN 
+		(
+			SELECT members.employee
+			from employee
+			JOIN members ON employee.employee_id = members.employee
+			WHERE members.employee_group = 3
+		)
+		THEN true
+		ELSE false
+	END AS "checked"
+FROM employee;
