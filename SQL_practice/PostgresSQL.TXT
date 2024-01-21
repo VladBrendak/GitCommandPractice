@@ -72,3 +72,17 @@ SELECT
 FROM task
 JOIN priority ON task.priority = priority.priority_id
 JOIN status ON task.status = status.status_id;
+
+SELECT tag.name,
+	CASE 
+		WHEN tag.tag_id IN 
+		(
+			SELECT tasktag.tag_id
+			from tag
+			JOIN tasktag ON tag.tag_id = tasktag.tag_id
+			WHERE tasktag.task_id = 3
+		)
+		THEN true
+		ELSE false
+	END AS "relative"
+FROM tag
