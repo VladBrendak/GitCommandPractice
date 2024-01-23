@@ -100,3 +100,32 @@ SELECT employee.employee_id, employee.name,
 		ELSE false
 	END AS "checked"
 FROM employee;
+
+SELECT t.task_id, t.title, tag.*
+FROM task AS t
+JOIN tasktag AS tt ON t.task_id = tt.task_id
+JOIN tag ON tt.tag_id = tag.tag_id
+WHERE LOWER(t.title) LIKE 'task%' AND tag.name IN ('tag1', 'nt1');
+
+SELECT DISTINCT 
+    t.*,
+    p.priority AS "priority_value",
+    s.status AS "status_value",
+    (
+        SELECT STRING_AGG(CONCAT('#', tag.name), ' ') 
+        FROM tag
+        JOIN tasktag ON tag.tag_id = tasktag.tag_id
+        WHERE tasktag.task_id = t.task_id
+    ) AS "task tags"
+FROM 
+    task t
+JOIN 
+    priority p ON t.priority = p.priority_id
+JOIN 
+    status s ON t.status = s.status_id
+JOIN 
+    tasktag tt ON t.task_id = tt.task_id
+JOIN 
+    tag ON tt.tag_id = tag.tag_id
+WHERE 
+    LOWER(t.title) LIKE '%' AND tag.name IN ('nt1', 'tag1', 'tag2', 'Home', 'nt1');
